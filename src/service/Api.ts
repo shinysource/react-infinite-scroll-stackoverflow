@@ -12,9 +12,9 @@ const getTags = async () => {
   return response;
 };
 
-const getQuestions = (ids: string) => {
+const getQuestions = (tagged: string) => {
   const response = instance.get(
-    `/questions/${ids}?order=desc&sort=activity&site=stackoverflow`
+    `/search/advanced?order=desc&sort=activity&tagged=${tagged}&site=stackoverflow`
   );
   return response;
 };

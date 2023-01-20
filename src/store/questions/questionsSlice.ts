@@ -17,12 +17,8 @@ const initialState: QuestionsState = {
 
 export const fetchQuestions = createAsyncThunk(
   "questions/getQuestions",
-  async (page: number) => {
-    let ids = `${page.toString()}`;
-    for (let i = 1; i < 20; i++) {
-      ids = ids.concat(`;${page + i}`);
-    }
-    const response = await getQuestions(ids);
+  async (tagged: string) => {
+    const response = await getQuestions(tagged);
     return response.data;
   }
 );
