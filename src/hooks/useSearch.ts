@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../store/hooks";
 import { fetchTags, selectTags } from "../store/tags/tagsSlice";
 
-export const useTags = () => {
+export const useSearch = () => {
   const tags = useAppSelector(selectTags);
+  const [searchString, setSearchString] = useState("");
   const dispatch = useAppDispatch();
   const [selectedTag, setSelectedTag] = useState("");
 
@@ -12,6 +13,7 @@ export const useTags = () => {
   }, [tags]);
 
   const handleTag = (tag: string) => {
+    console.log(tag);
     setSelectedTag(tag);
   };
 
@@ -20,6 +22,8 @@ export const useTags = () => {
   }, [dispatch]);
 
   return {
+    searchString,
+    setSearchString,
     tags,
     selectedTag,
     handleTag,

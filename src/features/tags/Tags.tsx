@@ -1,7 +1,7 @@
-import { useTags } from "../../hooks/useTags";
+import { useSearch } from "../../hooks/useSearch";
 
 const Tags = () => {
-  const { tags, selectedTag, handleTag } = useTags();
+  const { tags, selectedTag, handleTag } = useSearch();
 
   return (
     <div>

@@ -4,10 +4,10 @@ import { ClipLoader } from "react-spinners";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
-  fetchQuestions,
+  searchQuestions,
   selectQuestions,
 } from "../../store/questions/questionsSlice";
-import { useTags } from "../../hooks/useTags";
+import { useSearch } from "../../hooks/useSearch";
 
 import ListItem from "../../components/list/ListItem";
 
@@ -20,16 +20,14 @@ const override: CSSProperties = {
 export interface QuestionsProps {}
 
 const Questions = () => {
-  const { selectedTag } = useTags();
+  const { selectedTag, searchString } = useSearch();
   const isSearch = useAppSelector((state) => state.questions.isSearch);
   const questions = useAppSelector(selectQuestions);
   const status = useAppSelector((state) => state.questions.status);
   const dispatch = useAppDispatch();
 
-  const [page, setPage] = useState(0);
-
   useEffect(() => {
-    dispatch(fetchQuestions(0));
+    dispatch(searchQuestions({ tagged: selectedTag, body: searchString }));
   }, [dispatch]);
 
   const isLoading = useMemo(() => {
@@ -37,15 +35,15 @@ const Questions = () => {
   }, [status]);
 
   const handleNext = () => {
-    dispatch(fetchQuestions(page + 1));
-    setPage(page + 1);
+    dispatch(searchQuestions({ tagged: selectedTag, body: searchString }));
   };
 
   return (
     <InfiniteScroll
       dataLength={questions.length} //This is important field to render the next data
       next={handleNext}
-      hasMore={!isSearch}
+      hasMore={true}
+      className="!overflow-hidden"
       loader={
         <ClipLoader
           color="#FF0"
@@ -56,7 +54,6 @@ const Questions = () => {
           data-testid="loader"
         />
       }
-      scrollableTarget="scrollableDiv"
     >
       <div className="divide-y">
         {questions.map((question, index) => (
