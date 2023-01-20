@@ -1,4 +1,4 @@
-import React, { CSSProperties, useMemo, useEffect, useState } from "react";
+import React, { CSSProperties, useMemo, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ClipLoader } from "react-spinners";
 
@@ -21,14 +21,13 @@ export interface QuestionsProps {}
 
 const Questions = () => {
   const { selectedTag, searchString } = useSearch();
-  const isSearch = useAppSelector((state) => state.questions.isSearch);
   const questions = useAppSelector(selectQuestions);
   const status = useAppSelector((state) => state.questions.status);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(searchQuestions({ tagged: selectedTag, body: searchString }));
-  }, [dispatch]);
+  }, [dispatch, searchString, selectedTag]);
 
   const isLoading = useMemo(() => {
     return status === "loading" ? true : false;

@@ -1,7 +1,16 @@
+import { useEffect } from "react";
+
 import { useSearch } from "../../hooks/useSearch";
+import { useAppDispatch } from "../../store/hooks";
+import { fetchTags } from "../../store/tags/tagsSlice";
 
 const Tags = () => {
   const { tags, selectedTag, handleTag } = useSearch();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchTags());
+  }, [dispatch]);
 
   return (
     <div>
