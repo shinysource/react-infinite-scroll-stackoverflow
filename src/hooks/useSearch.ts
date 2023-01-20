@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../store/hooks";
-import { fetchTags, selectTags } from "../store/tags/tagsSlice";
+
+import { selectTags } from "../store/tags/tagsSlice";
+import { searchQuestions } from "../store/questions/questionsSlice";
 
 export const useSearch = () => {
   const tags = useAppSelector(selectTags);
@@ -13,13 +15,9 @@ export const useSearch = () => {
   }, [tags]);
 
   const handleTag = (tag: string) => {
-    console.log(tag);
     setSelectedTag(tag);
+    dispatch(searchQuestions({ tagged: selectedTag, body: searchString }));
   };
-
-  useEffect(() => {
-    dispatch(fetchTags());
-  }, [dispatch]);
 
   return {
     searchString,
