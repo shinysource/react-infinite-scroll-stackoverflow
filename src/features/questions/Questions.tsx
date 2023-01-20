@@ -1,4 +1,4 @@
-import React, { CSSProperties, useMemo } from "react";
+import React, { CSSProperties, useMemo, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ClipLoader } from "react-spinners";
 
@@ -21,6 +21,7 @@ export interface QuestionsProps {}
 
 const Questions = () => {
   const { selectedTag } = useTags();
+  const isSearch = useAppSelector((state) => state.questions.isSearch);
   const questions = useAppSelector(selectQuestions);
   const status = useAppSelector((state) => state.questions.status);
   const dispatch = useAppDispatch();
@@ -36,33 +37,33 @@ const Questions = () => {
   }, [status]);
 
   const handleNext = () => {
-    dispatch(fetchQuestions(page));
+    dispatch(fetchQuestions(page + 1));
     setPage(page + 1);
   };
 
   return (
-    <div id="scrollableDiv" className="h-[500px]">
-      <InfiniteScroll
-        dataLength={questions.length} //This is important field to render the next data
-        next={handleNext}
-        hasMore={true}
-        loader={
-          <ClipLoader
-            color="#000"
-            loading={isLoading}
-            cssOverride={override}
-            size={40}
-            aria-label="Loading Spinner"
-            data-testid="loader"
-          />
-        }
-        scrollableTarget="scrollableDiv"
-      >
+    <InfiniteScroll
+      dataLength={questions.length} //This is important field to render the next data
+      next={handleNext}
+      hasMore={!isSearch}
+      loader={
+        <ClipLoader
+          color="#FF0"
+          loading={isLoading}
+          cssOverride={override}
+          size={40}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      }
+      scrollableTarget="scrollableDiv"
+    >
+      <div className="divide-y">
         {questions.map((question, index) => (
           <ListItem question={question} key={index} />
         ))}
-      </InfiniteScroll>
-    </div>
+      </div>
+    </InfiniteScroll>
   );
 };
 

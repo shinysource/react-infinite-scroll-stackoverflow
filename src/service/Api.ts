@@ -19,4 +19,11 @@ const getQuestions = (ids: string) => {
   return response;
 };
 
-export { getTags, getQuestions };
+const search = (tagged: string, body: string) => {
+  const response = instance.get(
+    `/search/advanced?order=desc&sort=activity&body=${body}&tagged=${tagged}&site=stackoverflow`
+  );
+  return response;
+};
+
+export { getTags, getQuestions, search };

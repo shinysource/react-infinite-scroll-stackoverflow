@@ -29,9 +29,11 @@ export const tagsSlice = createSlice({
       })
       .addCase(fetchTags.fulfilled, (state, action) => {
         state.status = "idle";
+        let tempTags = [];
         for (let i = 0; i < 10; i++) {
-          state.tags.push(action.payload[i].name);
+          tempTags.push(action.payload[i].name);
         }
+        state.tags = tempTags;
       })
       .addCase(fetchTags.rejected, (state) => {
         state.status = "failed";
